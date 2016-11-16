@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MyTB</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_sir">Hello Sir</string>
+    <string name="exit">Exit</string>
+    <string name="interpolator_styles">加速器类型</string>
+    <string name="already_selected">勿重复选择</string>
+    <string name="city">城市</string>
+    <string name="input_city">输入城市名</string>
+    <string name="search">搜索</string>
+    <string name="td_weather">天气：</string>
+    <string name="td_temp">温度：</string>
+    <string name="td_wind">风速：</string>
+    <string name="today">今天：</string>
+    <string name="no_weather_info">无城市天气信息</string>
+    <string name="no_air_info">无城市空气质量信息</string>
+    <string name="td_air">空气质量：</string>泡面
+    <string name="td_pm">PM2.5：</string>
+    <string name="td_date">时间：</string>
+    <string name="key_word">关键字</string>
+    <string name="on_loading">正在加载...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

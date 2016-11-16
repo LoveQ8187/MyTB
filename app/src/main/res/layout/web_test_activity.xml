@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Activitys.WebTestActivity"
+    >
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/fragment_container"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#09f"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+        <TextView android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:id="@+id/select_project"
+            android:layout_marginLeft="50dp"
+            android:textSize="40dp"
+            android:textColor="#ffff"
+            android:textAllCaps="false"
+            android:text="Projects"/>
+
+
+        <ListView android:layout_height="500dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:divider="@null"
+            android:id="@+id/project_list">
+
+        </ListView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/exit_sys_button"
+            android:textColor="#ffff"
+            android:textSize="20dp"
+            android:text="@string/exit"/>
+
+
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

@@ -1,4 +1,4 @@
-package BoradcastRecivers;
+package com.example.chenghao.mytb.BoradcastRecivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

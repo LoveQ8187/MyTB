@@ -45,7 +45,7 @@
         <activity android:name=".Activitys.GM2048" />
 
         <receiver
-            android:name="BoradcastRecivers.BackPressReceiver"
+            android:name=".BoradcastRecivers.BackPressReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+   登陆的界面，亦是其他Test activity的父类
+*/
 public class TableActivity extends AppCompatActivity {
 
     static boolean firstBoot=true;

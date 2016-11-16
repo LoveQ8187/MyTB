@@ -37,6 +37,9 @@ public class JsonForCookMsg {
             getCookMsg.setCookImtro(obj.getString("imtro"));
             getCookMsg.setIngredients(obj.getString("ingredients"));
             getCookMsg.setBurden(obj.getString("burden"));
+            //读取食物图片URl
+            net.sf.json.JSONArray getUrl=net.sf.json.JSONArray.fromObject(obj.getString("albums"));
+            getCookMsg.setCookImgUrl(getUrl.getString(0));
             //读取菜谱步骤
             stepArray=net.sf.json.JSONArray.fromObject(obj.getString("steps"));
             for(int j=0;j<stepArray.size();j++){

@@ -3,7 +3,7 @@
     package="com.example.chenghao.mytb">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -27,8 +27,8 @@
             android:theme="@style/MyTheme" />
         <activity
             android:name=".Activitys.HttpTestActivity"
-            android:screenOrientation="portrait"
             android:label="HttpTestActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activitys.AnimationTestActivity"
@@ -42,7 +42,16 @@
             android:name=".Activitys.ViewGroupTestActivity"
             android:label="ViewGroupTestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activitys.GM2048"></activity>
+        <activity android:name=".Activitys.GM2048" />
+
+        <receiver
+            android:name="BoradcastRecivers.BackPressReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="MY_BACK_PRESS"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -4,14 +4,17 @@ package com.example.chenghao.mytb.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.chenghao.mytb.HttpUtils.CookMsg;
+import com.example.chenghao.mytb.HttpUtils.ImageLoadAsyncTask;
 import com.example.chenghao.mytb.R;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.HashMap;
  */
 public class CookInfoFragment extends Fragment {
 
+    private final static String TAG="Qin:CookInfoFragment";
     private static Context mContext;
     private CookMsg cookMsg;
     private ArrayList<HashMap<String,String>>restoreStepMsg;
@@ -56,11 +60,18 @@ public class CookInfoFragment extends Fragment {
         TextView showCookBurden=(TextView)view.findViewById(R.id.show_burden);
         showCookBurden.setText(cookMsg.getBurden());
 
+        ImageView showCookPic=(ImageView)view.findViewById(R.id.show_cook_pic);
+        ImageLoadAsyncTask imgLoader=new ImageLoadAsyncTask(showCookPic);
+        String url=cookMsg.getCookImgUrl();
+        if (url!=null) {
+            Log.d(TAG, "load cook pic by:"+url);
+            imgLoader.execute(url);
+        }
+
         ListView showCookStep=(ListView)view.findViewById(R.id.cook_step_list);
 
 
         return view;
     }
-
 
 }

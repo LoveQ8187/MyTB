@@ -35,12 +35,13 @@ import java.util.Map;
  */
 public class GetCookBookFragment extends Fragment {
 
+    public static boolean isReturnForBackStack=false;//用于判断是否从back栈中返回，若是，则重新填充cookList
     private final static String TAG="Qin:GetCookBookFragment";
     private Context mContext;
     private Handler childHandle,mainHandle;
     private static List<CookMsg>cookMsgs=null;
     private SimpleAdapter simpleAdapter;
-    private static List<Map<String,String>>msgItem;
+    private static List<Map<String,String>>msgItem;//运管处存储用于填充listview的cookMsg
 
     public static CookMsg remainCookMsg;//用于存储listview选取的cookMsg,供CookInfoFragment使用
     private OnItemClick onItemClick;
@@ -64,8 +65,19 @@ public class GetCookBookFragment extends Fragment {
         Button searchButton=(Button)view.findViewById(R.id.cook_search);
         final ListView cookList=(ListView)view.findViewById(R.id.cool_list);
 
-
-
+        //当GetCookBookFragment从back栈返回时cookList会被清空，因此重新填充
+        if(isReturnForBackStack){
+            simpleAdapter=new SimpleAdapter(
+                    mContext,
+                    msgItem,
+                    R.layout.cook_list,
+                    new String[]{"cookTitle","cookImtro"},
+                    new int[]{R.id.cook_title,R.id.cook_discribtion}
+            );
+            cookList.setAdapter(simpleAdapter);
+            Log.d(TAG,"reload cookList");
+            isReturnForBackStack=false;
+        }
         new Thread(getCookInfo).start();
 
         mainHandle=new Handler(){

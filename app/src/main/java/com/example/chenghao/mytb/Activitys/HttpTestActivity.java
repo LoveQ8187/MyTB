@@ -10,15 +10,18 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.example.chenghao.mytb.Fragments.BackHandleFragment;
 import com.example.chenghao.mytb.Fragments.CookInfoFragment;
 import com.example.chenghao.mytb.Fragments.GetCookBookFragment;
 import com.example.chenghao.mytb.Fragments.GetPM2_5Fragment;
 import com.example.chenghao.mytb.Fragments.GetWeatherFragment;
+import com.example.chenghao.mytb.Interfaces.BackHandleInterface;
 import com.example.chenghao.mytb.R;
 
-public class HttpTestActivity extends TableActivity {
+public class HttpTestActivity extends TableActivity implements BackHandleInterface{
 
-    private  FragmentManager fragmentManager=null;
+    private FragmentManager fragmentManager=null;
+    private BackHandleFragment mBackHandleFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,17 +63,19 @@ public class HttpTestActivity extends TableActivity {
                                 @Override
                                 public void OnClick() {
                                     //当点击GetCookBookFragment中的cooklist，回调此方法,跳转至CookInfoFragment,同时更新toolbar
-                                    toolbar.setNavigationIcon(R.mipmap.back);
+                                   /* toolbar.setNavigationIcon(R.mipmap.back);
                                     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             Log.d("Qin:","setNavigationOnClickListener");
                                             getFragmentManager().popBackStack();
                                         }
-                                    });
-
-                                    FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+                                    });*/
+                                    //将isReturnForBackStack设置为true，当CookInfoFragment从back栈返回时，加载listview
+                                    GetCookBookFragment.isReturnForBackStack=true;
+                                    FragmentTransaction fragmentTransaction=fragmentManager .beginTransaction();
                                     fragmentTransaction.replace(R.id.fragment_container, new CookInfoFragment());
+                                    fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();
                                 }
                             });
@@ -90,4 +95,17 @@ public class HttpTestActivity extends TableActivity {
 
     }
 
+    @Override
+    public void setSelectedFragment(BackHandleFragment mBackHandleFragment) {
+        this.mBackHandleFragment=mBackHandleFragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount()==0){
+            super.onBackPressed();
+        }else {
+            getFragmentManager().popBackStack();
+        }
+    }
 }

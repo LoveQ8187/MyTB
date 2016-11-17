@@ -24,7 +24,7 @@ import java.util.HashMap;
  * A simple {@link Fragment} subclass.
  * 用于显示菜谱的详细信息
  */
-public class CookInfoFragment extends Fragment {
+public class CookInfoFragment extends BackHandleFragment {
 
     private final static String TAG="Qin:CookInfoFragment";
     private static Context mContext;
@@ -74,4 +74,8 @@ public class CookInfoFragment extends Fragment {
         return view;
     }
 
+    @Override
+    protected boolean onBackFragmentPressed() {
+        return false;
+    }
 }

@@ -17,7 +17,7 @@ import java.util.zip.Inflater;
  */
 public class CookListAdapter extends BaseAdapter {
 
-    private List<Map>itemList;//存储列表需要显示的数据
+    private List<Map>itemList;  //存储列表需要显示的数据
     private int layoutId;//list单行的布局id
     private Context mContext;
     private LayoutInflater mInflater;//获取LayoutInfalter对象导入布局

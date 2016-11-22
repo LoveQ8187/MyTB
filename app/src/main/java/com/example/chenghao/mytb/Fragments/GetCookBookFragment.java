@@ -41,7 +41,7 @@ public class GetCookBookFragment extends Fragment {
     private Handler childHandle,mainHandle;
     private static List<CookMsg>cookMsgs=null;
     private SimpleAdapter simpleAdapter;
-    private static List<Map<String,String>>msgItem;//运管处存储用于填充listview的cookMsg
+    private static List<HashMap<String,String>>msgItem;//运管处存储用于填充listview的cookMsg
 
     public static CookMsg remainCookMsg;//用于存储listview选取的cookMsg,供CookInfoFragment使用
     private OnItemClick onItemClick;
@@ -145,18 +145,19 @@ public class GetCookBookFragment extends Fragment {
     private void setMsgItem(){
         Log.d(TAG,"try to get Msg Items");
         msgItem=new ArrayList<>();
-        Map<String,String> map;
+        HashMap<String,String> map;
         CookMsg cookMsg;
         for(int i=0;i<cookMsgs.size();i++){
             cookMsg=cookMsgs.get(i);
             map=new HashMap<>();
             map.put("cookTitle",cookMsg.getCookTitle());
             map.put("cookImtro",cookMsg.getCookImtro());
+            map.put("cookImgUrl",cookMsg.getCookImgUrl());
             msgItem.add(map);
         }
         Log.d(TAG,"set Msg Items Success");
     }
-
+    //TODO:remainCookMsg没有存储做菜的步骤信息，需要重新检查代码
     //根据listview的选择设置remainCookMsg
     private void setRemainCookMsg(int i){
         if(!cookMsgs.isEmpty()){

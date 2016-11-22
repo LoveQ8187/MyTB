@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="20dp"
+            android:maxLines="1"
             android:hint="@string/key_word"
             android:id="@+id/input_cook_name"/>
         <Button android:layout_width="wrap_content"

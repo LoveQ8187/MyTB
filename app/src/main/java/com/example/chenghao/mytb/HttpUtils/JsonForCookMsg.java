@@ -45,7 +45,8 @@ public class JsonForCookMsg {
             for(int j=0;j<stepArray.size();j++){
                 step=new HashMap();
                 obj=stepArray.getJSONObject(j);
-                step.put(obj.getString("img"),obj.getString("step"));
+                step.put("imgUrl",obj.getString("img"));
+                step.put("cookStep",obj.getString("step"));
                 steps.add(step);
             }
             getCookMsg.setCookSteps(steps);

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import com.example.chenghao.mytb.HttpUtils.CookMsg;
 import com.example.chenghao.mytb.HttpUtils.ImageLoadAsyncTask;
 import com.example.chenghao.mytb.R;
+import com.example.chenghao.mytb.Utils.CookListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +32,7 @@ public class CookInfoFragment extends BackHandleFragment {
     private final static String TAG="Qin:CookInfoFragment";
     private static Context mContext;
     private CookMsg cookMsg;
-    private ArrayList<HashMap<String,String>>restoreStepMsg;
+    private ArrayList<HashMap<String,String>> restoreStepMsg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +54,12 @@ public class CookInfoFragment extends BackHandleFragment {
 
         TextView showCookTitle=(TextView)view.findViewById(R.id.show_cook_title);
         showCookTitle.setText(cookMsg.getCookTitle());
-        TextView showCookImtro=(TextView)view.findViewById(R.id.show_cook_imtro);
-        showCookImtro.setText(cookMsg.getCookImtro());
         TextView showCookTag=(TextView)view.findViewById(R.id.show_cook_tag);
-        showCookTag.setText(cookMsg.getCookTage());
+        showCookTag.setText(getString(R.string.cook_tag)+cookMsg.getCookTage());
         TextView showIngredients=(TextView)view.findViewById(R.id.show_ingredients);
-        showIngredients.setText(cookMsg.getIngredients());
+        showIngredients.setText(getString(R.string.cook_ingredients)+cookMsg.getIngredients());
         TextView showCookBurden=(TextView)view.findViewById(R.id.show_burden);
-        showCookBurden.setText(cookMsg.getBurden());
+        showCookBurden.setText(getString(R.string.cook_burden)+cookMsg.getBurden());
 
         ImageView showCookPic=(ImageView)view.findViewById(R.id.show_cook_pic);
         ImageLoadAsyncTask imgLoader=new ImageLoadAsyncTask(showCookPic);
@@ -69,9 +70,32 @@ public class CookInfoFragment extends BackHandleFragment {
         }
 
         ListView showCookStep=(ListView)view.findViewById(R.id.cook_step_list);
-
-
+        CookListAdapter cookListAdapter=new CookListAdapter(mContext,restoreStepMsg);
+        showCookStep.setAdapter(cookListAdapter);
+        setListViewHeightBasedOnChildren(showCookStep);
         return view;
+    }
+
+    //根据listview的项目设置listview高度
+    private void setListViewHeightBasedOnChildren(ListView listView){
+        ListAdapter listAdapter=listView.getAdapter();
+        if(listAdapter==null)
+            return;
+
+        int height=0;
+        int length=listAdapter.getCount();
+        for(int i=0;i<length;i++){
+            View itemView=listAdapter.getView(i,null,listView);
+            //计算子项itemView的宽高
+            itemView.measure(0,0);
+            height+=itemView.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = height+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
     }
 
     @Override

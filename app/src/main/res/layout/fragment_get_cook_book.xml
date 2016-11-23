@@ -4,8 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.chenghao.mytb.Fragments.GetCookBookFragment"
     android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_marginTop="20dp"
@@ -25,32 +31,34 @@
             android:layout_marginLeft="10dp"
             android:id="@+id/cook_search"
             android:text="@string/search"/>
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-        <LinearLayout android:layout_width="fill_parent"
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#fffff0"
-            android:orientation="vertical">
-            <ListView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="3dp"
+                    android:id="@+id/cool_list"/>
+            </LinearLayout>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cool_list"/>
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/on_loading"
-            android:textSize="20dp"
-            android:id="@+id/loading"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+                android:gravity="center"
+                android:text="@string/on_loading"
+                android:textSize="20dp"
+                android:id="@+id/loading"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

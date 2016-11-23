@@ -18,6 +18,7 @@ import com.example.chenghao.mytb.HttpUtils.CookMsg;
 import com.example.chenghao.mytb.HttpUtils.ImageLoadAsyncTask;
 import com.example.chenghao.mytb.R;
 import com.example.chenghao.mytb.Utils.CookListAdapter;
+import com.example.chenghao.mytb.Utils.SetListViewHeight;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,31 +73,11 @@ public class CookInfoFragment extends BackHandleFragment {
         ListView showCookStep=(ListView)view.findViewById(R.id.cook_step_list);
         CookListAdapter cookListAdapter=new CookListAdapter(mContext,restoreStepMsg);
         showCookStep.setAdapter(cookListAdapter);
-        setListViewHeightBasedOnChildren(showCookStep);
+        SetListViewHeight.setListViewHeightBasedOnChildren(showCookStep);
         return view;
     }
 
-    //根据listview的项目设置listview高度
-    private void setListViewHeightBasedOnChildren(ListView listView){
-        ListAdapter listAdapter=listView.getAdapter();
-        if(listAdapter==null)
-            return;
 
-        int height=0;
-        int length=listAdapter.getCount();
-        for(int i=0;i<length;i++){
-            View itemView=listAdapter.getView(i,null,listView);
-            //计算子项itemView的宽高
-            itemView.measure(0,0);
-            height+=itemView.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = height+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        // listView.getDividerHeight()获取子项间分隔符占用的高度
-        // params.height最后得到整个ListView完整显示需要的高度
-        listView.setLayoutParams(params);
-    }
 
     @Override
     protected boolean onBackFragmentPressed() {

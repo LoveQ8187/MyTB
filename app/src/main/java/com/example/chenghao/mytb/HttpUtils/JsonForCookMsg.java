@@ -24,6 +24,9 @@ public class JsonForCookMsg {
 
         List<CookMsg> cookMsgs=new ArrayList<>();
         net.sf.json.JSONObject obj=net.sf.json.JSONObject.fromObject(cookMsg);
+        if(obj.getString("resultcode").equals("202")){
+            return null;
+        }
         result=obj.getString("result");
         obj=net.sf.json.JSONObject.fromObject(result);
         jsonArray=net.sf.json.JSONArray.fromObject(obj.getString("data"));

@@ -23,6 +23,8 @@ import com.example.chenghao.mytb.HttpUtils.CookMsg;
 import com.example.chenghao.mytb.HttpUtils.GetCookMsgs;
 import com.example.chenghao.mytb.HttpUtils.PureNet;
 import com.example.chenghao.mytb.R;
+import com.example.chenghao.mytb.Utils.CookListAdapter;
+import com.example.chenghao.mytb.Utils.SetListViewHeight;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -35,13 +37,15 @@ import java.util.Map;
  */
 public class GetCookBookFragment extends Fragment {
 
-    public static boolean isReturnForBackStack=false;//用于判断是否从back栈中返回，若是，则重新填充cookList
+    public static boolean isReturnForBackStack=false;//判断是否从back栈中返回，若是，则重新填充cookList
+    private static boolean isGetCookMessageSuccess=false;//判断是否返回正确的菜谱信息
     private final static String TAG="Qin:GetCookBookFragment";
     private Context mContext;
     private Handler childHandle,mainHandle;
     private static List<CookMsg>cookMsgs=null;
     private SimpleAdapter simpleAdapter;
-    private static List<HashMap<String,String>>msgItem;//运管处存储用于填充listview的cookMsg
+    private CookListAdapter cookListAdapter;
+    private static ArrayList<HashMap<String,String>>msgItem;//运管处存储用于填充listview的cookMsg
 
     public static CookMsg remainCookMsg;//用于存储listview选取的cookMsg,供CookInfoFragment使用
     private OnItemClick onItemClick;
@@ -67,14 +71,9 @@ public class GetCookBookFragment extends Fragment {
 
         //当GetCookBookFragment从back栈返回时cookList会被清空，因此重新填充
         if(isReturnForBackStack){
-            simpleAdapter=new SimpleAdapter(
-                    mContext,
-                    msgItem,
-                    R.layout.cook_list,
-                    new String[]{"cookTitle","cookImtro"},
-                    new int[]{R.id.cook_title,R.id.cook_discribtion}
-            );
-            cookList.setAdapter(simpleAdapter);
+            cookListAdapter=new CookListAdapter(mContext,msgItem,R.layout.cook_list);
+            cookList.setAdapter(cookListAdapter);
+            SetListViewHeight.setListViewHeightBasedOnChildren(cookList);
             Log.d(TAG,"reload cookList");
             isReturnForBackStack=false;
         }
@@ -83,17 +82,18 @@ public class GetCookBookFragment extends Fragment {
         mainHandle=new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                Log.d(TAG,"update cook listview");
-                simpleAdapter=new SimpleAdapter(
-                        mContext,
-                        msgItem,
-                        R.layout.cook_list,
-                        new String[]{"cookTitle","cookImtro"},
-                        new int[]{R.id.cook_title,R.id.cook_discribtion}
-                );
-                cookList.setAdapter(simpleAdapter);
-                setOnLoading.setVisibility(View.GONE);
-                Toast.makeText(mContext, "Searched Success", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"update cook listview ");
+                if(isGetCookMessageSuccess) {
+                    //子线程获取到正确的菜谱信息
+                    cookListAdapter = new CookListAdapter(mContext, msgItem, R.layout.cook_list);
+                    cookList.setAdapter(cookListAdapter);
+                    SetListViewHeight.setListViewHeightBasedOnChildren(cookList);
+                    setOnLoading.setVisibility(View.GONE);
+                }else {
+                    //子线程获取菜谱信息失败
+                    setOnLoading.setVisibility(View.VISIBLE);
+                    setOnLoading.setText(getString(R.string.load_fail));
+                }
             }
         };
 
@@ -112,6 +112,9 @@ public class GetCookBookFragment extends Fragment {
                 message.obj=cookName;
                 childHandle.sendMessage(message);
                 setOnLoading.setVisibility(View.VISIBLE);
+                cookList.setAdapter(null);
+                setOnLoading.setText(getString(R.string.on_loading));
+                SetListViewHeight.setListViewHeightBasedOnTextView(cookList,setOnLoading);
             }
         });
         return view;
@@ -129,9 +132,14 @@ public class GetCookBookFragment extends Fragment {
                     String cookName=(String) msg.obj;
                    // cookMsgs= GetCookMsgs.excute(cookName);
                     cookMsgs=GetCookMsgs.excuteForJson(cookName);
-                    setMsgItem();
-                    Log.d(TAG,"childHandle got the cook message");
                     Message mainMsg=mainHandle.obtainMessage();
+                    if(cookMsgs!=null){
+                        setMsgItem();
+                        isGetCookMessageSuccess=true;
+                        Log.d(TAG,"childHandle got the cook message");
+                    }else {
+                        isGetCookMessageSuccess=false;
+                    }
                     mainMsg.obj=null;
                     mainHandle.sendMessage(mainMsg);
 
@@ -151,13 +159,12 @@ public class GetCookBookFragment extends Fragment {
             cookMsg=cookMsgs.get(i);
             map=new HashMap<>();
             map.put("cookTitle",cookMsg.getCookTitle());
-            map.put("cookImtro",cookMsg.getCookImtro());
+            map.put("cookTag",cookMsg.getCookTage());
             map.put("cookImgUrl",cookMsg.getCookImgUrl());
             msgItem.add(map);
         }
         Log.d(TAG,"set Msg Items Success");
     }
-    //TODO:remainCookMsg没有存储做菜的步骤信息，需要重新检查代码
     //根据listview的选择设置remainCookMsg
     private void setRemainCookMsg(int i){
         if(!cookMsgs.isEmpty()){

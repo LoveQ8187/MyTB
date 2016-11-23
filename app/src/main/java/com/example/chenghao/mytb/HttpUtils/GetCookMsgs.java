@@ -53,6 +53,10 @@ public class GetCookMsgs {
     public static List<CookMsg> excuteForJson(String menu){
         String url=UnKManager.COOK_URL+"?menu="+menu+"&dtype=json&pn=&rn=&albums=&=&key="+UnKManager.COOK_KEY;
         String result=  PureNet.get(url);
+        if(result==null){
+            Log.d(TAG,"result is null");
+            return null;
+        }
         Log.d(TAG,"get cook json date success");
         return JsonForCookMsg.getCookMsgList(result);
     }

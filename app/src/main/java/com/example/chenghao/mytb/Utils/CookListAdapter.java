@@ -26,15 +26,33 @@ import java.util.zip.Inflater;
 public class CookListAdapter extends BaseAdapter {
 
     private final static String TAG="Qing:CookListAdapter";
-    private final int layoutId=R.layout.cook_step_list;//list单行的布局id
 
     private ArrayList<HashMap<String,String>>itemList;  //存储列表需要显示的数据
     private HashMap<String,String>item;
     private Context mContext;
     private LayoutInflater mInflater;//获取LayoutInfalter对象导入布局
+    private boolean isCookInfoList=false;//判断是否用作GetCookBookFragment中的listview
 
+    private int layoutId=R.layout.cook_step_list;
+    private int imageViewId=R.id.step_pic;
+    private int textViewId=R.id.step_msg;
+    private int textView2Id;
     public CookListAdapter(Context mContext, ArrayList<HashMap<String,String>>itemList){
+        textView2Id=0;
         this.mContext=mContext;
+        this.itemList=itemList;
+        mInflater= LayoutInflater.from(this.mContext);
+    }
+
+    //为代码复用，用此类填充GetCookBookFragment中的listview，所以重载构造函数,传入新的控件id值
+    public CookListAdapter(Context context,ArrayList<HashMap<String,String>>itemList,int layoutId){
+        isCookInfoList=true;
+        this.layoutId=layoutId;
+        imageViewId=R.id.food_pic;
+        textViewId=R.id.cook_title;
+        textView2Id=R.id.cook_discribtion;
+
+        this.mContext=context;
         this.itemList=itemList;
         mInflater= LayoutInflater.from(this.mContext);
     }
@@ -58,34 +76,47 @@ public class CookListAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if(convertView==null){
             viewHolder=new ViewHolder();
+            Log.d(TAG,"layoutId="+String.valueOf(layoutId));
             convertView=mInflater.inflate(layoutId,null);
-            viewHolder.cookStep=(TextView)convertView.findViewById(R.id.step_msg);
-            viewHolder.imageView=(ImageView)convertView.findViewById(R.id.step_pic);
+            viewHolder.cookStep=(TextView)convertView.findViewById(textViewId);
+            viewHolder.imageView=(ImageView)convertView.findViewById(imageViewId);
+            if(textView2Id!=0){
+                //如果是用于GetCookBookFragment，则需要获取另一个textview用于显示菜的标签
+                viewHolder.cookTag=(TextView)convertView.findViewById(textView2Id);
+            }
             convertView.setTag(viewHolder);
         }else {
             viewHolder=(ViewHolder) convertView.getTag();
         }
 
-        Log.d(TAG,"itemlist'size="+itemList.size());
         item=itemList.get(i);
-
-        String imgUrl=item.get("imgUrl");
-        String cookStep=item.get("cookStep");
-
+        String imgUrl;
+        String cookStepOrTitle;
+        String cookTag;
+        if(textView2Id==0) {
+            imgUrl = item.get("imgUrl");
+            cookStepOrTitle = item.get("cookStep");
+        }else {
+            imgUrl = item.get("cookImgUrl");
+            cookStepOrTitle = item.get("cookTitle");
+            cookTag=item.get("cookTag");
+            viewHolder.cookTag.setText(cookTag);
+        }
         ImageLoadAsyncTask imgLoader=new ImageLoadAsyncTask(viewHolder.imageView);
         imgLoader.execute(imgUrl);
         Log.d(TAG,"load item img");
-       // viewHolder.cookTitle.setText(item.get("cookTitle"));
-        viewHolder.cookStep.setText(cookStep);
+        viewHolder.cookStep.setText(cookStepOrTitle);
         Log.d(TAG,"load item data success");
         return convertView;
     }
 
     static class ViewHolder{
-        //步骤图片
+        //步骤图片or菜的图片
         ImageView imageView;
-        //步骤详细
+        //步骤详细or菜名
         TextView cookStep;
-
+        //用于GetCookBookFragment中显示便签
+        TextView cookTag;
     }
+
 }

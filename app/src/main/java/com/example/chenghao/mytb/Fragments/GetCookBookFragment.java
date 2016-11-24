@@ -107,6 +107,8 @@ public class GetCookBookFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //释放CookListAdapter中的图片缓存信息
+                CookListAdapter.releaseImgMsg();
                 String cookName=setCookName.getText().toString();
                 Message message=childHandle.obtainMessage();
                 message.obj=cookName;
@@ -178,4 +180,10 @@ public class GetCookBookFragment extends Fragment {
          void OnClick();
     }
 
+    @Override
+    public void onDestroy() {
+        //释放CookListAdapter中的图片缓存信息
+        CookListAdapter.releaseImgMsg();
+        super.onDestroy();
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.chenghao.mytb.Utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ public class CookListAdapter extends BaseAdapter {
 
     private final static String TAG="Qing:CookListAdapter";
 
+    private static HashMap<String,Bitmap>restoreImgMsg=new HashMap<>();//用于缓存菜单的图片信息
     private ArrayList<HashMap<String,String>>itemList;  //存储列表需要显示的数据
     private HashMap<String,String>item;
     private Context mContext;
@@ -102,11 +105,21 @@ public class CookListAdapter extends BaseAdapter {
             cookTag=item.get("cookTag");
             viewHolder.cookTag.setText(cookTag);
         }
-        ImageLoadAsyncTask imgLoader=new ImageLoadAsyncTask(viewHolder.imageView);
-        imgLoader.execute(imgUrl);
-        Log.d(TAG,"load item img");
+
+        if(restoreImgMsg.containsKey(imgUrl)){
+            //如果缓存中包含图片信息，直接读取
+            Log.d(TAG,"img is existed,url="+imgUrl);
+            viewHolder.imageView.setImageBitmap(restoreImgMsg.get(imgUrl));
+        }else {
+            ImageLoadAsyncTask imgLoader = new ImageLoadAsyncTask(viewHolder.imageView);
+            imgLoader.execute(imgUrl);
+            //获取viewHolder.imageView的bitmap
+           // Bitmap restoreBitmap = ((BitmapDrawable) ((ImageView) viewHolder.imageView).getDrawable()).getBitmap();
+            //缓存图片信息
+           // restoreImgMsg.put(imgUrl, restoreBitmap);
+        }
         viewHolder.cookStep.setText(cookStepOrTitle);
-        Log.d(TAG,"load item data success");
+        Log.d(TAG, "load item data success");
         return convertView;
     }
 
@@ -119,4 +132,13 @@ public class CookListAdapter extends BaseAdapter {
         TextView cookTag;
     }
 
+    //释放缓存中的图片
+    public static void releaseImgMsg(){
+        if(!restoreImgMsg.isEmpty())restoreImgMsg.clear();
+    }
+
+    //缓存图片
+    public static void setImgMsg(String url,Bitmap bitmap){
+        restoreImgMsg.put(url, bitmap);
+    }
 }

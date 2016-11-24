@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.chenghao.mytb.Utils.CookListAdapter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -36,8 +38,10 @@ public class ImageLoadAsyncTask extends AsyncTask<String,Void,Bitmap> {
                 InputStream in=conn.getInputStream();
                 Log.d(TAG,"get data success");
                 Bitmap bitmap= BitmapFactory.decodeStream(in);
-                if(bitmap!=null)
+                if(bitmap!=null){
+                    CookListAdapter.setImgMsg(Url,bitmap);
                     return bitmap;
+                }
             }catch (IOException i){
                 Log.e(TAG,"IOException");
                 i.printStackTrace();
@@ -56,6 +60,7 @@ public class ImageLoadAsyncTask extends AsyncTask<String,Void,Bitmap> {
         super.onPostExecute(bitmap);
         if(bitmap!=null)
         {
+
             imgeView.setImageBitmap(bitmap);
             Log.d(TAG,"set bitmap");
         }else {

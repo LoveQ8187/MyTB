@@ -35,6 +35,7 @@ public class TableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
 
+
         if(TableActivity.firstBoot){
             Toolbar myToolbar=(Toolbar)findViewById(R.id.toolbar);
             myToolbar.setTitle(getString(R.string.app_name));

@@ -5,8 +5,10 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -15,6 +17,7 @@ import com.example.chenghao.mytb.Fragments.CookInfoFragment;
 import com.example.chenghao.mytb.Fragments.GetCookBookFragment;
 import com.example.chenghao.mytb.Fragments.GetPM2_5Fragment;
 import com.example.chenghao.mytb.Fragments.GetWeatherFragment;
+import com.example.chenghao.mytb.Fragments.HttpFragment;
 import com.example.chenghao.mytb.Interfaces.BackHandleInterface;
 import com.example.chenghao.mytb.R;
 
@@ -62,15 +65,6 @@ public class HttpTestActivity extends TableActivity implements BackHandleInterfa
                             getCookBookFragment.setOnItemClick(new GetCookBookFragment.OnItemClick() {
                                 @Override
                                 public void OnClick() {
-                                    //当点击GetCookBookFragment中的cooklist，回调此方法,跳转至CookInfoFragment,同时更新toolbar
-                                   /* toolbar.setNavigationIcon(R.mipmap.back);
-                                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Log.d("Qin:","setNavigationOnClickListener");
-                                            getFragmentManager().popBackStack();
-                                        }
-                                    });*/
                                     //将isReturnForBackStack设置为true，当CookInfoFragment从back栈返回时，加载listview
                                     GetCookBookFragment.isReturnForBackStack=true;
                                     FragmentTransaction fragmentTransaction=fragmentManager .beginTransaction();
@@ -93,6 +87,25 @@ public class HttpTestActivity extends TableActivity implements BackHandleInterfa
 
         });
 
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        HttpFragment httpFragment=new HttpFragment();
+        httpFragment.setChangeAcitityToolbarAction(new HttpFragment.ChangeAcitityToolbar() {
+            @Override
+            public void setToolbar(int tag) {
+                switch (tag){
+                    case 1:
+                        toolbar.setTitle("Weather");break;
+                    case 2:
+                        toolbar.setTitle("Air");break;
+                    case 3:
+                        toolbar.setTitle("CookBook");break;
+                    default:
+                        break;
+                }
+            }
+        });
+        fragmentTransaction.add(R.id.fragment_container,httpFragment);
+        fragmentTransaction.commit();
     }
 
     @Override

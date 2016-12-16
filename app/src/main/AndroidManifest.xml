@@ -42,16 +42,20 @@
             android:name=".Activitys.ViewGroupTestActivity"
             android:label="ViewGroupTestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activitys.GM2048" />
 
         <receiver
             android:name=".BoradcastRecivers.BackPressReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="MY_BACK_PRESS"/>
+                <action android:name="MY_BACK_PRESS" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name="Services.Serviceook"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

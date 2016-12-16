@@ -99,12 +99,12 @@ public class WebTestActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed(){
         finish();
     }
 
     @Override
-    public void finish() {
+    public void finish(){
         unregisterReceiver(mFinishReceiver);
         super.finish();
     }

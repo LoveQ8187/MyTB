@@ -18,7 +18,6 @@ public class ProjectsManager extends AppCompatActivity {
             "AnimationTest",
             "CustomView",
             "ViewGroupTest",
-            "GM2048"
     };
     private Context context;
     public ProjectsManager(Context context){
@@ -46,8 +45,6 @@ public class ProjectsManager extends AppCompatActivity {
                 break;
             case 4:
                 intent=new Intent(context,ViewGroupTestActivity.class);break;
-            case 5:
-                intent=new Intent(context,GM2048.class);break;
             default:
                 break;
         }

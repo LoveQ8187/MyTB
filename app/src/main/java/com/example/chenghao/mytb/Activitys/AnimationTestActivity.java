@@ -23,7 +23,7 @@ import com.example.chenghao.mytb.Utils.EyesTouchLisener;
 
 public class AnimationTestActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private final static int ROTATE__TAG=1;
+    private final static int ROTATE_TAG=1;
     private final static int SCALE_TAG=2;
     private final static int ALPHA_TAG=3;
     private final static int TRANSITION_TAG=4;
@@ -51,7 +51,7 @@ public class AnimationTestActivity extends AppCompatActivity implements View.OnC
         });
 
         Button rotateButton=(Button)findViewById(R.id.rotate_button);
-        rotateButton.setTag(ROTATE__TAG);
+        rotateButton.setTag(ROTATE_TAG);
         rotateButton.setOnClickListener(this);
         Button scaleButton=(Button)findViewById(R.id.scale_button);
         scaleButton.setTag(SCALE_TAG);
@@ -73,12 +73,13 @@ public class AnimationTestActivity extends AppCompatActivity implements View.OnC
     }
     @Override
     public void onClick(View view) {
+        
         int getTag=(Integer)view.getTag();
         ImageView pic=(ImageView)findViewById(R.id.pic);
         pic.clearAnimation();
         AnimationSet animationSet=null;
         switch (getTag){
-            case ROTATE__TAG:
+            case ROTATE_TAG:
                 animationSet=Animations.setRotateAnimation();
                /* int width=pic.getWidth();
                 int heigth=pic.getHeight();
